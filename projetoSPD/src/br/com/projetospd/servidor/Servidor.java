@@ -23,7 +23,6 @@ public class Servidor {
 	public Servidor(int porta) throws IOException {
 		inicializar();
 		servidor = new ServerSocket(porta);
-		JTextField labelInicial = new JTextField();
 		area.append("Porta 1234 aberta! \r\n");
 		meuPainel.add(area);
 		mostraTela();
@@ -52,35 +51,40 @@ public class Servidor {
 		area.append("Uma nova Conexão aberta " + cliente.getInetAddress().getHostAddress() + "\r\n");
 		Scanner s = new Scanner(this.cliente.getInputStream());
 		PrintStream saidaCliente = new PrintStream(cliente.getOutputStream()); 			
-			int n1;
-			int n2;
+			double n1;
+			double n2;
+			n1 = Double.parseDouble(s.nextLine());
+			String p = s.nextLine();
+			n2 = Double.parseDouble(s.nextLine());
+			String re = s.nextLine(); 
+			double resultado = 0;
 			
-			switch (s.nextLine()) {
+			switch (p) {
 			case "SOMA":
-				n1 = s.nextInt();
-				n2 = s.nextInt();
-				saidaCliente.println(n1 + " + " + n2 + " = "+ (n1+n2));
+				resultado = (n1+n2);
+				
 				break;				
 			case "SUBTRACAO":
-				n1 = s.nextInt();
-				n2 = s.nextInt();
-				saidaCliente.println(n1 + " - "+ n2 + " = "+ (n1-n2));		
+				resultado = (n1-n2);		
 				break;
 			case "MULTIPLICACAO":
-				n1 = s.nextInt();
-				n2 = s.nextInt();
-				saidaCliente.println(n1 + " * "+ n2 + " = "+ (n1*n2));
+				resultado = (n1*n2);
 				break;	
 			case "DIVICAO":
-				n1 = s.nextInt();
-				n2 = s.nextInt();
-					
-				saidaCliente.println(n1 + " / "+ n2 + " = "+ (n1/n2));
+				resultado = (n1/n2);
+				break;
+				
+			case "limpar":
+				saidaCliente.println("fazer ação");
 				break;
 			default:
 				saidaCliente.println("Erro na Operação selecionada");
 				break;
 			}
+			if(re.equals("=")){
+				saidaCliente.println(resultado);
+			}
+			
 		s.close();
 		servidor.close();
 		cliente.close();

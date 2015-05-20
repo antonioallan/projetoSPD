@@ -26,73 +26,23 @@ public class Servidor {
 		area.append("Porta 1234 aberta! \r\n");
 		meuPainel.add(area);
 		mostraTela();
-		cliente = servidor.accept();
-		tratandoCliente();
+		execulta();
 	}
 	
-	public void run(){
+	public void execulta() throws IOException{
+		
 		while (true) {
-
-			  //cliente = servidor.accept();
-
-			  // cria um objeto que vai tratar a conexão
-			  //TratamentoClass tratamento = new TratamentoClass(cliente);
-
-			  // cria a thread em cima deste objeto
-			  //Thread t = new Thread(tratamento);
-
-			  // inicia a thread
-			  //t.start();
-
-			}
-	}
-	
-	public void tratandoCliente() throws IOException{
-		area.append("Uma nova Conexão aberta " + cliente.getInetAddress().getHostAddress() + "\r\n");
-		Scanner s = new Scanner(this.cliente.getInputStream());
-		PrintStream saidaCliente = new PrintStream(cliente.getOutputStream()); 			
-			double n1;
-			double n2;
-			n1 = Double.parseDouble(s.nextLine());
-			String p = s.nextLine();
-			n2 = Double.parseDouble(s.nextLine());
-			String re = s.nextLine(); 
-			double resultado = 0;
+			cliente = servidor.accept();
+			area.append("Uma nova Conexão aberta " + cliente.getInetAddress().getHostAddress() + "\r\n");
 			
-			switch (p) {
-			case "SOMA":
-				resultado = (n1+n2);
-				
-				break;				
-			case "SUBTRACAO":
-				resultado = (n1-n2);		
-				break;
-			case "MULTIPLICACAO":
-				resultado = (n1*n2);
-				break;	
-			case "DIVICAO":
-				resultado = (n1/n2);
-				break;
-				
-			case "limpar":
-				saidaCliente.println("fazer ação");
-				break;
-			default:
-				saidaCliente.println("Erro na Operação selecionada");
-				break;
-			}
-			if(re.equals("=")){
-				saidaCliente.println(resultado);
-			}
-			
-		s.close();
-		servidor.close();
-		cliente.close();
+			TratarCliente tc = new TratarCliente(cliente);
+			new Thread(tc).start();
+		}
 	}
 	
 	public void inicializar(){
 		
-		janela = new JFrame("Meu primeiro frame em Java");
+		janela = new JFrame("Servidor Calculadora");
 		meuPainel = new JPanel();
 		meuPainel.setBounds(5, 5, 580, 380);
 		meuPainel.setLayout(null);

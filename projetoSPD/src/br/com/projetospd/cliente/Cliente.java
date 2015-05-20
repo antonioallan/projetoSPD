@@ -42,7 +42,7 @@ public class Cliente {
 	}
 
 	public void inicializar() {
-		janela = new JFrame("Meu primeiro frame em Java");
+		janela = new JFrame("Calculadora");
 		meuPainel = new JPanel();
 		meuPainel.setLayout(new GridLayout(4, 1));
 		resultado = new JLabel();
@@ -192,7 +192,6 @@ public class Cliente {
 			}
 			String result = resultado.getText() + ".";
 			resultado.setText(result);
-
 		}
 
 	}
@@ -205,12 +204,11 @@ public class Cliente {
 			String ultimoChar = resultado.getText().substring(
 					resultado.getText().length() - 1);
 			if (!ultimoChar.equals(".") && !numero2.equals("")) {
-				qtdNumero = 0;
-				possueOperador = false;
 				limparResult = true;
 				saida.println(numero2);
 				saida.println("=");
 				resultado.setText(saidaServidor.nextLine());
+				zeraParametros();
 			}
 
 		}
@@ -222,13 +220,27 @@ public class Cliente {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			qtdNumero = 0;
-			possueOperador = false;
-			saida.println("limpa");
+			zeraParametros();
+			saida.println("limpar");
 			resultado.setText("");
 
 		}
 
+	}
+	
+	public void zeraParametros(){
+		qtdNumero = 0;
+		possueOperador = false;
+		numero1 = "";
+		numero2 = "";
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		super.finalize();
+		cliente.close();
+		
 	}
 
 }
